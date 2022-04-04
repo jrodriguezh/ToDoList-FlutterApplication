@@ -2,8 +2,36 @@ import 'package:flutter/material.dart';
 import 'package:touchandlist/constants/routes.dart';
 import 'package:touchandlist/enums/menu_action.dart';
 import 'package:touchandlist/services/auth/auth_service.dart';
+import 'package:touchandlist/services/crud/notes_service.dart';
+
+class NotesView extends StatefulWidget {
+  const NotesView({Key? key}) : super(key: key);
+
+  @override
+  State<NotesView> createState() => _NotesViewState();
+}
 
 class _NotesViewState extends State<NotesView> {
+  late final NotesService _notesService;
+  String get userEmail {
+    // Because the AuthService user could be opcional, we force to it exists with
+    //the !! in our App we are forcing users to have an email
+    return AuthService.firebase().currentUser!.email!;
+  }
+
+  @override
+  void initState() {
+    _notesService = NotesService();
+    _notesService.open();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _notesService.close();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,16 +59,28 @@ class _NotesViewState extends State<NotesView> {
           })
         ],
       ),
-      body: const Text("Hello World"),
+      body: FutureBuilder(
+        future: _notesService.getOtCreateUser(email: userEmail),
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.done:
+              return StreamBuilder(
+                  stream: _notesService.allNotes,
+                  builder: (context, snapshot) {
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.waiting:
+                        return const Text("Waiting for all notes...");
+                      default:
+                        return const CircularProgressIndicator();
+                    }
+                  });
+            default:
+              return const CircularProgressIndicator();
+          }
+        },
+      ),
     );
   }
-}
-
-class NotesView extends StatefulWidget {
-  const NotesView({Key? key}) : super(key: key);
-
-  @override
-  State<NotesView> createState() => _NotesViewState();
 }
 
 Future<bool> showLogOutDialog(BuildContext context) {
