@@ -13,13 +13,18 @@ class NotesService {
 
   // This will create a singleton for the NotesService, so it will be only one.
   static final NotesService _shared = NotesService._sharedInstance();
-  NotesService._sharedInstance();
+  NotesService._sharedInstance() {
+    _notesStreamController = StreamController<List<DatabaseNote>>.broadcast(
+      onListen: () {
+        _notesStreamController.sink.add(_notes);
+      },
+    );
+  }
   factory NotesService() {
     return _shared;
   }
 
-  final _notesStreamController =
-      StreamController<List<DatabaseNote>>.broadcast();
+  late final StreamController<List<DatabaseNote>> _notesStreamController;
 
   Stream<List<DatabaseNote>> get allNotes {
     return _notesStreamController.stream;
@@ -57,7 +62,7 @@ class NotesService {
     //Update DB
     final updatesCount = await db.update(noteTable, {
       textColumn: text,
-      isSignWithCloudColumn: 0,
+      isSincedWithCloudColumn: 0,
     });
 
     if (updatesCount == 0) {
@@ -143,13 +148,13 @@ class NotesService {
     final noteId = await db.insert(noteTable, {
       userIdColumn: owner.id,
       textColumn: text,
-      isSignWithCloudColumn: 1,
+      isSincedWithCloudColumn: 1,
     });
     final note = DatabaseNote(
       id: noteId,
       userId: owner.id,
       text: text,
-      isSyncWithCloud: true,
+      isSyncedWithCloud: true,
     );
 
     //afer we create the notes we are placing it on the List of notes
@@ -246,6 +251,7 @@ class NotesService {
       final docsPath = await getApplicationDocumentsDirectory();
       final dbPath = join(docsPath.path, dbName);
       final db = await openDatabase(dbPath);
+
       _db = db;
 
 // Execute the query that creates both tables, user and note, read constants below for + info
@@ -289,13 +295,13 @@ class DatabaseNote {
   final int id;
   final int userId;
   final String text;
-  final bool isSyncWithCloud;
+  final bool isSyncedWithCloud;
 
   DatabaseNote({
     required this.id,
     required this.userId,
     required this.text,
-    required this.isSyncWithCloud,
+    required this.isSyncedWithCloud,
   });
 
   //If isSignWithCloud is read as 1, the boolean of isSyncWithCloud will be true, otherwise will be false
@@ -303,12 +309,12 @@ class DatabaseNote {
       : id = map[idColumn] as int,
         userId = map[userIdColumn] as int,
         text = map[textColumn] as String,
-        isSyncWithCloud =
-            (map[isSignWithCloudColumn] as int) == 1 ? true : false;
+        isSyncedWithCloud =
+            (map[isSincedWithCloudColumn] as int) == 1 ? true : false;
 
   @override
   String toString() {
-    " Note, ID =$id, userId =$userId, isSyncWithCloud = $isSyncWithCloud, text = $text";
+    " Note, ID =$id, userId =$userId, isSyncWithCloud = $isSyncedWithCloud, text = $text";
     return super.toString();
   }
 
@@ -320,13 +326,13 @@ class DatabaseNote {
 }
 
 const dbName = "notes.db";
-const noteTable = "notes";
+const noteTable = "note";
 const userTable = "user";
 const idColumn = "id";
 const emailColumn = "email";
-const userIdColumn = "userId";
+const userIdColumn = "user_id";
 const textColumn = "text";
-const isSignWithCloudColumn = "isSignWithCloud";
+const isSincedWithCloudColumn = "is_synced_with_cloud";
 
 //For create the DB NOTE, if it doesn't exist, we will take the query and ***add IF NOT EXISTS *** before the name of the table
 const createNoteTableQuery = """CREATE TABLE IF NOT EXISTS "note" (
