@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import "package:sqflite/sqflite.dart";
 import "package:path_provider/path_provider.dart";
 import "package:path/path.dart" show join;
+import 'package:touchandlist/extensions/list/filter.dart';
 import 'crud_exceptions.dart';
 
 class NotesService {
@@ -28,8 +29,18 @@ class NotesService {
 
   late final StreamController<List<DatabaseNote>> _notesStreamController;
 
+// We create a bool flag that filters the notes get from the database
+// from users
+
   Stream<List<DatabaseNote>> get allNotes {
-    return _notesStreamController.stream;
+    return _notesStreamController.stream.filter((note) {
+      final currentUser = _user;
+      if (currentUser != null) {
+        return note.userId == currentUser.id;
+      } else {
+        throw UserShouldBeSetBeforeReadingAllNotes();
+      }
+    });
   }
 
   Future<DatabaseUser> getOtCreateUser({

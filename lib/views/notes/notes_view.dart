@@ -19,7 +19,7 @@ class _NotesViewState extends State<NotesView> {
   String get userEmail {
     // Because the AuthService user could be opcional, we force to it exists with
     //the !! in our App we are forcing users to have an email
-    return AuthService.firebase().currentUser!.email!;
+    return AuthService.firebase().currentUser!.email;
   }
 
   @override
