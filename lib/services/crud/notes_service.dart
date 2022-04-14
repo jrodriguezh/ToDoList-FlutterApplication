@@ -11,6 +11,8 @@ class NotesService {
 
   List<DatabaseNote> _notes = [];
 
+  DatabaseUser? _user;
+
   // This will create a singleton for the NotesService, so it will be only one.
   static final NotesService _shared = NotesService._sharedInstance();
   NotesService._sharedInstance() {
@@ -30,12 +32,21 @@ class NotesService {
     return _notesStreamController.stream;
   }
 
-  Future<DatabaseUser> getOtCreateUser({required String email}) async {
+  Future<DatabaseUser> getOtCreateUser({
+    required String email,
+    bool setAsCurrentUser = true,
+  }) async {
     try {
       final user = await getUser(email: email);
+      if (setAsCurrentUser) {
+        _user = user;
+      }
       return user;
     } on CouldNotFindUser {
       final createdUser = await createUser(email: email);
+      if (setAsCurrentUser) {
+        _user = createdUser;
+      }
       return createdUser;
     } catch (e) {
       //We can place a stop here to debug the code if we need it in the future
@@ -60,10 +71,15 @@ class NotesService {
     await getNote(id: note.id);
 
     //Update DB
-    final updatesCount = await db.update(noteTable, {
-      textColumn: text,
-      isSincedWithCloudColumn: 0,
-    });
+    final updatesCount = await db.update(
+      noteTable,
+      {
+        textColumn: text,
+        isSincedWithCloudColumn: 0,
+      },
+      where: "id = ?",
+      whereArgs: [note.id],
+    );
 
     if (updatesCount == 0) {
       throw CouldNotUpdateNote();
