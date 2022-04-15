@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:touchandlist/constants/routes.dart';
 import 'package:touchandlist/services/auth/auth_service.dart';
 
-class VeryfyEmailView extends StatefulWidget {
-  const VeryfyEmailView({Key? key}) : super(key: key);
+class VerifyEmailView extends StatefulWidget {
+  const VerifyEmailView({Key? key}) : super(key: key);
 
   @override
-  State<VeryfyEmailView> createState() => _VeryfyEmailViewState();
+  State<VerifyEmailView> createState() => _VerifyEmailViewState();
 }
 
-class _VeryfyEmailViewState extends State<VeryfyEmailView> {
+class _VerifyEmailViewState extends State<VerifyEmailView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +32,7 @@ class _VeryfyEmailViewState extends State<VeryfyEmailView> {
             onPressed: () async {
               await AuthService.firebase().logOut();
               Navigator.of(context).pushNamedAndRemoveUntil(
-                loginRoute,
+                registerRoute,
                 (route) => false,
               );
             },
