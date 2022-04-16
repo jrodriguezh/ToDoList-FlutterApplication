@@ -39,7 +39,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
             _controller.clear();
             await showPasswordResetSentDialog(context);
           }
-          if (state.exceeveption != null) {
+          if (state.exception != null) {
             await showErrorDialog(context,
                 'We could not process your request. Please make sure that you are a registered user, or if not, register a user now by going back one step.');
           }
