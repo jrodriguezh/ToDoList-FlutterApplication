@@ -27,9 +27,13 @@ class NotesListView extends StatelessWidget {
           onTap: () {
             onTap(note);
           },
+          textColor: const Color(0xffc0caf5),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+          selected: false,
           title: Text(
             note.text,
-            maxLines: 1,
+            maxLines: 3,
             softWrap: true,
             overflow: TextOverflow.ellipsis,
           ),
@@ -41,6 +45,7 @@ class NotesListView extends StatelessWidget {
               }
             },
             icon: const Icon(Icons.delete),
+            color: const Color(0xffc0caf5),
           ),
         );
       },

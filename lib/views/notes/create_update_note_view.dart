@@ -99,7 +99,9 @@ class _CreateUpdateNoteViewState extends State<CreateUpdateNoteView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xff24283b),
       appBar: AppBar(
+        backgroundColor: const Color(0xff414868),
         title: const Text("New Note"),
         actions: [
           IconButton(
@@ -121,15 +123,19 @@ class _CreateUpdateNoteViewState extends State<CreateUpdateNoteView> {
           switch (snapshot.connectionState) {
             case ConnectionState.done:
               _setupTextControllerListener();
-              return TextField(
-                controller: _textController,
-                keyboardType: TextInputType.multiline,
-
+              return Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: TextField(
+                  controller: _textController,
+                  keyboardType: TextInputType.multiline,
+                  style: const TextStyle(color: Colors.white),
 // Advice: maxLines == null makes TextBox Size Increase with
 // the text write on it
-                maxLines: null,
-                decoration: const InputDecoration(
-                  hintText: "Type here your note...",
+                  maxLines: null,
+                  decoration: const InputDecoration(
+                    hintStyle: TextStyle(color: Color(0xffc0caf5)),
+                    hintText: "Type here your note...",
+                  ),
                 ),
               );
             default:

@@ -20,7 +20,12 @@ void main() {
     MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.white,
+          primary: Colors.white,
+          secondary: const Color(0xffc0caf5),
+        ),
+        useMaterial3: true,
       ),
       home: BlocProvider<AuthBloc>(
         create: (context) => AuthBloc(FirebaseAuthProvider()),

@@ -4,8 +4,8 @@ import 'package:touchandlist/utilities/dialogs/generic_dialog.dart';
 Future<bool> showDeleteDialog(BuildContext context) {
   return showGenericDialog<bool>(
     context: context,
-    title: "Log Out",
-    content: "Are you sure you want to DELETE this Note?",
+    title: "Delete Note",
+    content: "Are you sure you want to delete this Note?",
     optionBuilder: () => {
       "Cancel": false,
       "Yes": true,
