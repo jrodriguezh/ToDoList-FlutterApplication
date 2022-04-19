@@ -20,6 +20,7 @@ class NotesView extends StatefulWidget {
 }
 
 class _NotesViewState extends State<NotesView> {
+  int index = 0;
   late final FirebaseCloudStorage _notesService;
   String get userId => AuthService.firebase().currentUser!.id;
 
@@ -102,6 +103,40 @@ class _NotesViewState extends State<NotesView> {
                   return const CircularProgressIndicator();
               }
             }),
+      ),
+      bottomNavigationBar: NavigationBarTheme(
+        data: NavigationBarThemeData(
+          indicatorColor: const Color(0xffc0caf5),
+          labelTextStyle: MaterialStateProperty.all(
+            const TextStyle(
+              fontSize: 14,
+              color: Color(0xffc0caf5),
+            ),
+          ),
+        ),
+        child: NavigationBar(
+          animationDuration: const Duration(seconds: 1),
+          labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
+          backgroundColor: const Color(0xff24283b),
+          height: 70,
+          selectedIndex: index,
+          onDestinationSelected: (index) => setState(
+            () => this.index = index,
+          ),
+          destinations: const [
+            NavigationDestination(
+              icon: Icon(Icons.list, color: Color(0xffc0caf5)),
+              selectedIcon: Icon(Icons.list),
+              label: "Notes",
+            ),
+            NavigationDestination(
+              icon:
+                  Icon(Icons.calendar_month_outlined, color: Color(0xffc0caf5)),
+              selectedIcon: Icon(Icons.calendar_month_outlined),
+              label: "Calendar",
+            ),
+          ],
+        ),
       ),
     );
   }

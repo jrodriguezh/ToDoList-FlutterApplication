@@ -129,6 +129,7 @@ class _CreateUpdateNoteViewState extends State<CreateUpdateNoteView> {
                   controller: _textController,
                   keyboardType: TextInputType.multiline,
                   style: const TextStyle(color: Colors.white),
+                  autofocus: true,
 // Advice: maxLines == null makes TextBox Size Increase with
 // the text write on it
                   maxLines: null,
