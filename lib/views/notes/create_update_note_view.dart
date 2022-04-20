@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:touchandlist/constants/routes.dart';
 import 'package:touchandlist/services/auth/auth_service.dart';
 import 'package:touchandlist/services/cloud/firebase_cloud_storage.dart';
 import 'package:touchandlist/services/crud/notes_service.dart';
@@ -26,6 +27,7 @@ class _CreateUpdateNoteViewState extends State<CreateUpdateNoteView> {
   void initState() {
     _notesService = FirebaseCloudStorage();
     _textController = TextEditingController();
+
     super.initState();
   }
 
@@ -70,7 +72,7 @@ class _CreateUpdateNoteViewState extends State<CreateUpdateNoteView> {
     return newNote;
   }
 
-  void _deleteNoteIfTextIsEmpty() {
+  void _deleteNoteIfTextIsEmptyOrCanceled() {
     final note = _note;
     if (_textController.text.isEmpty && note != null) {
       _notesService.deleteNote(docuemntId: note.documentId);
@@ -80,7 +82,7 @@ class _CreateUpdateNoteViewState extends State<CreateUpdateNoteView> {
   void _saveNoteIfTextNotEmpty() async {
     final note = _note;
     final text = _textController.text;
-    if (note != null && text.isNotEmpty) {
+    if (note != null && text.isNotEmpty && text != "") {
       await _notesService.updateNote(
         documentId: note.documentId,
         text: text,
@@ -90,7 +92,7 @@ class _CreateUpdateNoteViewState extends State<CreateUpdateNoteView> {
 
   @override
   void dispose() {
-    _deleteNoteIfTextIsEmpty();
+    _deleteNoteIfTextIsEmptyOrCanceled();
     _saveNoteIfTextNotEmpty();
     _textController.dispose();
     super.dispose();
@@ -99,7 +101,6 @@ class _CreateUpdateNoteViewState extends State<CreateUpdateNoteView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xff24283b),
       appBar: AppBar(
         backgroundColor: const Color(0xff414868),
         title: const Text("New Note"),
@@ -117,32 +118,112 @@ class _CreateUpdateNoteViewState extends State<CreateUpdateNoteView> {
           ),
         ],
       ),
-      body: FutureBuilder(
-        future: createOrGetExistingNote(context),
-        builder: (context, snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.done:
-              _setupTextControllerListener();
-              return Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: TextField(
-                  controller: _textController,
-                  keyboardType: TextInputType.multiline,
-                  style: const TextStyle(color: Colors.white),
-                  autofocus: true,
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Color(0xff24283b),
+              Color(0xff414868),
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: Column(
+          children: [
+            FutureBuilder(
+              future: createOrGetExistingNote(context),
+              builder: (context, snapshot) {
+                switch (snapshot.connectionState) {
+                  case ConnectionState.done:
+                    _setupTextControllerListener();
+                    return Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Column(
+                        children: [
+                          TextField(
+                            controller: _textController,
+                            keyboardType: TextInputType.multiline,
+                            style: const TextStyle(color: Colors.white),
+                            autofocus: true,
 // Advice: maxLines == null makes TextBox Size Increase with
 // the text write on it
-                  maxLines: null,
-                  decoration: const InputDecoration(
-                    hintStyle: TextStyle(color: Color(0xffc0caf5)),
-                    hintText: "Type here your note...",
-                  ),
-                ),
-              );
-            default:
-              return const CircularProgressIndicator();
-          }
-        },
+                            maxLines: null,
+                            decoration: const InputDecoration(
+                              hintStyle: TextStyle(color: Color(0xffc0caf5)),
+                              hintText: "Type here your note...",
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.bottomRight,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Material(
+                                  color: Colors.transparent,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(0),
+                                    child: InkWell(
+                                      borderRadius: BorderRadius.circular(20),
+                                      onTap: () {
+                                        _textController.text = "";
+                                        Navigator.maybePop(context);
+                                      },
+                                      child: const Icon(
+                                        Icons.delete_forever_sharp,
+                                        color: Colors.white,
+                                        size: 35,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Material(
+                                  color: Colors.transparent,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(25.0),
+                                    child: InkWell(
+                                      borderRadius: BorderRadius.circular(20),
+                                      onTap: () {
+                                        _deleteNoteIfTextIsEmptyOrCanceled();
+                                        _saveNoteIfTextNotEmpty();
+                                        Navigator.maybePop(context);
+                                      },
+                                      child: const Icon(
+                                        Icons.check,
+                                        color: Colors.white,
+                                        size: 35,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    );
+                  default:
+                    return SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.8,
+                      child: Container(
+                          alignment: Alignment.center,
+                          decoration: const BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                Color(0xff24283b),
+                                Color(0xff414868),
+                              ],
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                            ),
+                          ),
+                          child: const CircularProgressIndicator()),
+                    );
+                }
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

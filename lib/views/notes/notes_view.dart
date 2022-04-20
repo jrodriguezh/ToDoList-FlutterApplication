@@ -96,11 +96,35 @@ class _NotesViewState extends State<NotesView> {
                       },
                     );
                   } else {
-                    return const CircularProgressIndicator();
+                    return Container(
+                        alignment: Alignment.center,
+                        decoration: const BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              Color(0xff24283b),
+                              Color(0xff414868),
+                            ],
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                          ),
+                        ),
+                        child: const CircularProgressIndicator());
                   }
 
                 default:
-                  return const CircularProgressIndicator();
+                  return Container(
+                      alignment: Alignment.center,
+                      decoration: const BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Color(0xff24283b),
+                            Color(0xff414868),
+                          ],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                        ),
+                      ),
+                      child: const CircularProgressIndicator());
               }
             }),
       ),
@@ -118,7 +142,7 @@ class _NotesViewState extends State<NotesView> {
           animationDuration: const Duration(seconds: 1),
           labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
           backgroundColor: const Color(0xff24283b),
-          height: 70,
+          height: MediaQuery.of(context).size.height * 0.11,
           selectedIndex: index,
           onDestinationSelected: (index) => setState(
             () => this.index = index,
