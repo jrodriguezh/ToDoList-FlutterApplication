@@ -4,7 +4,9 @@ import 'package:touchandlist/helpers/loading/loading_screen.dart';
 import 'package:touchandlist/services/auth/bloc/auth_event.dart';
 import 'package:touchandlist/services/auth/bloc/auth_state.dart';
 import 'package:touchandlist/services/auth/firebase_auth_provider.dart';
+import 'package:touchandlist/views/calendar/page/event_editing_page.dart';
 import 'package:touchandlist/views/forgot_password_view.dart';
+import 'package:touchandlist/views/home_view.dart';
 import 'package:touchandlist/views/register_view.dart';
 import 'constants/routes.dart';
 import 'services/auth/bloc/auth_bloc.dart';
@@ -19,8 +21,12 @@ void main() {
   runApp(
     MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Touch & List: Calendar Events',
       theme: ThemeData(
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Color(0xff414868),
+        ),
+        scaffoldBackgroundColor: const Color(0xff24283b),
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.white,
           primary: Colors.white,
@@ -37,6 +43,7 @@ void main() {
         // registerRoute: (context) => const RegisterView(),
         notesRoute: (context) => const NotesView(),
         // verifyEmailRoute: (context) => const VerifyEmailView(),
+        eventEditingPageRoute: (context) => const EventEditingPage(),
         createOrUpdateNoteRoute: (context) => const CreateUpdateNoteView(),
       },
     ),
@@ -61,7 +68,7 @@ class HomePage extends StatelessWidget {
       },
       builder: (context, state) {
         if (state is AuthStateLoggedIn) {
-          return const NotesView();
+          return const HomeView();
         } else if (state is AuthStateNeedsVerification) {
           return const VerifyEmailView();
         } else if (state is AuthStateLoggedOut) {
