@@ -1,3 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:touchandlist/services/auth/auth_provider.dart';
+import 'package:touchandlist/services/auth/auth_service.dart';
 import 'package:touchandlist/views/calendar/model/event.dart';
 import 'package:touchandlist/views/calendar/provider/event_provider.dart';
 import 'package:touchandlist/utils.dart';
@@ -81,7 +84,7 @@ class _EventEditingPageState extends State<EventEditingPage> {
             primary: Colors.transparent,
             shadowColor: Colors.transparent,
           ),
-          onPressed: saveForm,
+          onPressed: createEvent,
           icon: const Icon(Icons.done),
           label: const Text('SAVE'),
         ),
@@ -93,7 +96,7 @@ class _EventEditingPageState extends State<EventEditingPage> {
           border: UnderlineInputBorder(),
           hintText: 'Add Title',
         ),
-        onFieldSubmitted: (_) => saveForm(),
+        onFieldSubmitted: (_) => createEvent(),
         validator: (title) =>
             title != null && title.isEmpty ? 'Title cannot be empty' : null,
         controller: titleController,
@@ -106,7 +109,7 @@ class _EventEditingPageState extends State<EventEditingPage> {
         ),
         textInputAction: TextInputAction.newline,
         maxLines: 5,
-        onFieldSubmitted: (_) => saveForm(),
+        onFieldSubmitted: (_) => createEvent(),
         controller: descriptionController,
       );
 
@@ -250,8 +253,11 @@ class _EventEditingPageState extends State<EventEditingPage> {
     }
   }
 
-  Future saveForm() async {
+  Future createEvent() async {
     final isValid = _eventKey.currentState!.validate();
+    final currentUser = AuthService.firebase().currentUser!;
+    final userId = currentUser.id;
+    final docEvent = FirebaseFirestore.instance.collection("events").doc();
 
     if (isValid) {
       final event = Event(
@@ -260,8 +266,10 @@ class _EventEditingPageState extends State<EventEditingPage> {
         from: fromDate,
         to: isAllDay ? fromDate : toDate,
         isAllDay: isAllDay,
+        ownerUserId: userId,
       );
 
+      final json = event.toJson();
       final isEditing = widget.event != null;
       final provider = Provider.of<EventProvider>(context, listen: false);
 
@@ -271,6 +279,7 @@ class _EventEditingPageState extends State<EventEditingPage> {
         Navigator.of(context).pop();
       } else {
         provider.addEvent(event);
+        //  await docEvent.set(json);
       }
 
       Navigator.of(context).pop();

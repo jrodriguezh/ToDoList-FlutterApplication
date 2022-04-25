@@ -1,22 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:touchandlist/views/calendar/model/event.dart';
 import 'package:touchandlist/utils.dart';
 import 'package:flutter/cupertino.dart';
 
 class EventProvider extends ChangeNotifier {
-  final List<Event> _events = [
-    Event(
-      title: 'Este evento es de prueba',
-      description: 'Esta descripción es de prueba',
-      from: DateTime.now(),
-      to: DateTime.now().add(const Duration(hours: 2)),
-    ),
-    Event(
-      title: 'Evento de 10 horas',
-      description: 'Descripción de evento de 10 horas',
-      from: DateTime.now(),
-      to: DateTime.now().add(const Duration(hours: 10)),
-    )
-  ];
+  final List<Event> _events = [];
 
   DateTime _selectedDate = DateTime.now();
 
@@ -55,5 +43,20 @@ class EventProvider extends ChangeNotifier {
     _events[index] = newEvent;
 
     notifyListeners();
+  }
+
+//realTimeRead
+  Stream<List<Event>> readEventsRealTime() => FirebaseFirestore.instance
+      .collection("events")
+      .snapshots()
+      .map((snapshot) =>
+          snapshot.docs.map((doc) => Event.fromJson(doc.data())).toList());
+
+  void readEvents() {
+    Stream<List<Event>> listaEventos = FirebaseFirestore.instance
+        .collection("events")
+        .snapshots()
+        .map((snapshot) =>
+            snapshot.docs.map((doc) => Event.fromJson(doc.data())).toList());
   }
 }
