@@ -26,7 +26,10 @@ class EventViewingPage extends StatelessWidget {
             const SizedBox(height: 32),
             Text(
               event.title,
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 24),
             Text(
@@ -40,15 +43,16 @@ class EventViewingPage extends StatelessWidget {
   Widget buildDateTime(Event event) {
     return Column(
       children: [
-        buildDate(event.isAllDay ? 'All-day' : 'From', event.from),
-        if (!event.isAllDay) buildDate('To', event.to),
+        buildDate(event.isAllDay ? 'All-day' : 'From', event.starts),
+        if (!event.isAllDay) buildDate('To', event.ends),
       ],
     );
   }
 
   Widget buildDate(String title, DateTime date) {
-    const styleTitle = TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
-    const styleDate = TextStyle(fontSize: 18);
+    const styleTitle = TextStyle(
+        color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold);
+    const styleDate = TextStyle(color: Colors.white, fontSize: 18);
 
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 8),

@@ -10,12 +10,43 @@ class CalendarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    EventProvider().refreshEvents();
     final events = Provider.of<EventProvider>(context).events;
 
     return SfCalendar(
       view: CalendarView.month,
       firstDayOfWeek: 1,
-      monthViewSettings: MonthViewSettings(showAgenda: true),
+      monthViewSettings: const MonthViewSettings(
+        showAgenda: true,
+        agendaViewHeight: 120,
+        agendaStyle: AgendaStyle(
+            backgroundColor: Colors.transparent,
+            appointmentTextStyle: TextStyle(
+                color: Colors.white, fontSize: 13, fontStyle: FontStyle.italic),
+            dayTextStyle: TextStyle(
+                color: Color.fromARGB(255, 46, 206, 155),
+                fontSize: 13,
+                fontStyle: FontStyle.italic),
+            dateTextStyle: TextStyle(
+                color: Color(0xffc0caf5),
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+                fontStyle: FontStyle.normal)),
+        monthCellStyle: MonthCellStyle(
+          textStyle: TextStyle(
+              fontStyle: FontStyle.normal,
+              fontSize: 15,
+              color: Color.fromARGB(255, 255, 255, 255)),
+          trailingDatesTextStyle: TextStyle(
+              fontStyle: FontStyle.normal,
+              fontSize: 15,
+              color: Color(0xffc0caf5)),
+          leadingDatesTextStyle: TextStyle(
+              fontStyle: FontStyle.normal,
+              fontSize: 15,
+              color: Color(0xffc0caf5)),
+        ),
+      ),
       dataSource: EventDataSource(events),
       initialSelectedDate: DateTime.now(),
       todayHighlightColor: const Color.fromARGB(255, 46, 206, 155),

@@ -7,6 +7,8 @@ import 'package:touchandlist/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../db/events_database.dart';
+
 class EventEditingPage extends StatefulWidget {
   final Event? event;
 
@@ -39,8 +41,8 @@ class _EventEditingPageState extends State<EventEditingPage> {
 
       titleController.text = event.title;
       descriptionController.text = event.description;
-      fromDate = event.from;
-      toDate = event.to;
+      fromDate = event.starts;
+      toDate = event.ends;
       isAllDay = event.isAllDay;
     }
   }
@@ -91,10 +93,11 @@ class _EventEditingPageState extends State<EventEditingPage> {
       ];
 
   Widget buildTitle() => TextFormField(
-        style: const TextStyle(fontSize: 24),
+        style: const TextStyle(fontSize: 24, color: (Colors.white)),
         decoration: const InputDecoration(
+          hintStyle: TextStyle(color: Color(0xffc0caf5)),
           border: UnderlineInputBorder(),
-          hintText: 'Add Title',
+          hintText: 'Add Title...',
         ),
         onFieldSubmitted: (_) => createEvent(),
         validator: (title) =>
@@ -103,9 +106,11 @@ class _EventEditingPageState extends State<EventEditingPage> {
       );
 
   Widget buildDescription() => TextFormField(
+        style: const TextStyle(fontSize: 24, color: (Colors.white)),
         decoration: const InputDecoration(
           border: OutlineInputBorder(),
           hintText: 'Add Details',
+          hintStyle: TextStyle(color: Color(0xffc0caf5)),
         ),
         textInputAction: TextInputAction.newline,
         maxLines: 5,
@@ -118,10 +123,17 @@ class _EventEditingPageState extends State<EventEditingPage> {
           buildFrom(),
           if (!isAllDay) buildTo(),
           CheckboxListTile(
+            checkColor: Color(0xffc0caf5),
             controlAffinity: ListTileControlAffinity.leading,
-            title: const Text('All Day Event'),
+            title: const Text(
+              'All Day Event',
+              style: TextStyle(color: Color(0xffc0caf5)),
+            ),
             value: isAllDay,
-            activeColor: Theme.of(context).primaryColor,
+            activeColor: Colors.transparent,
+            side: const BorderSide(
+              color: Color(0xffc0caf5),
+            ),
             onChanged: (value) => setState(() => isAllDay = value!),
           )
         ],
@@ -179,7 +191,11 @@ class _EventEditingPageState extends State<EventEditingPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(header, style: const TextStyle(fontWeight: FontWeight.bold)),
+            Text(header,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xffc0caf5),
+                )),
             child,
           ],
         ),
@@ -190,8 +206,16 @@ class _EventEditingPageState extends State<EventEditingPage> {
     required VoidCallback onClicked,
   }) =>
       ListTile(
-        title: Text(text),
-        trailing: const Icon(Icons.arrow_drop_down),
+        title: Text(
+          text,
+          style: TextStyle(
+            color: Color(0xffc0caf5),
+          ),
+        ),
+        trailing: const Icon(
+          Icons.arrow_drop_down,
+          color: Color(0xffc0caf5),
+        ),
         onTap: onClicked,
       );
 
@@ -263,8 +287,8 @@ class _EventEditingPageState extends State<EventEditingPage> {
       final event = Event(
         title: titleController.text,
         description: descriptionController.text,
-        from: fromDate,
-        to: isAllDay ? fromDate : toDate,
+        starts: fromDate,
+        ends: isAllDay ? fromDate : toDate,
         isAllDay: isAllDay,
         ownerUserId: userId,
       );
@@ -275,11 +299,11 @@ class _EventEditingPageState extends State<EventEditingPage> {
 
       if (isEditing) {
         provider.editEvent(event, widget.event!);
-
         Navigator.of(context).pop();
       } else {
         provider.addEvent(event);
-        //  await docEvent.set(json);
+        await docEvent.set(json);
+        await EventsDatabase.instance.create(event);
       }
 
       Navigator.of(context).pop();

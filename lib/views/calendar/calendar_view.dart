@@ -8,25 +8,6 @@ class CalendarView extends StatelessWidget {
   const CalendarView({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => ChangeNotifierProvider(
-        create: (context) => EventProvider(),
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: "Touch&List: Calendar Events",
-          themeMode: ThemeMode.dark,
-          darkTheme: ThemeData.dark().copyWith(
-            scaffoldBackgroundColor: const Color(0xff24283b),
-            // primaryColor: Colors.red,
-          ),
-          home: const MainPage(),
-        ),
-      );
-}
-
-class MainPage extends StatelessWidget {
-  const MainPage({Key? key}) : super(key: key);
-
-  @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
           title: const Text("Touch&List: Calendar Events",

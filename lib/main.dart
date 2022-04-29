@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 import 'package:touchandlist/helpers/loading/loading_screen.dart';
 import 'package:touchandlist/services/auth/bloc/auth_event.dart';
 import 'package:touchandlist/services/auth/bloc/auth_state.dart';
 import 'package:touchandlist/services/auth/firebase_auth_provider.dart';
 import 'package:touchandlist/views/calendar/page/event_editing_page.dart';
+import 'package:touchandlist/views/calendar/provider/event_provider.dart';
 import 'package:touchandlist/views/forgot_password_view.dart';
 import 'package:touchandlist/views/home_view.dart';
 import 'package:touchandlist/views/register_view.dart';
@@ -19,33 +21,38 @@ import 'views/verify_email_view.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
-    MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Touch & List: Calendar Events',
-      theme: ThemeData(
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0xff414868),
+    ChangeNotifierProvider(
+      create: (context) => EventProvider(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Touch & List: Calendar Events',
+        // themeMode: ThemeMode.dark,
+        //   darkTheme: ThemeData.dark(),
+        theme: ThemeData(
+          appBarTheme: const AppBarTheme(
+            backgroundColor: Color(0xff414868),
+          ),
+          scaffoldBackgroundColor: const Color(0xff24283b),
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: Color(0xffc0caf5),
+            primary: Color.fromARGB(255, 139, 149, 196),
+            secondary: const Color(0xffc0caf5),
+          ),
+          useMaterial3: true,
         ),
-        scaffoldBackgroundColor: const Color(0xff24283b),
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.white,
-          primary: Colors.white,
-          secondary: const Color(0xffc0caf5),
+        home: BlocProvider<AuthBloc>(
+          create: (context) => AuthBloc(FirebaseAuthProvider()),
+          child: const HomePage(),
         ),
-        useMaterial3: true,
+        routes: {
+          // loginRoute: (context) => const LoginView(),
+          // registerRoute: (context) => const RegisterView(),
+          notesRoute: (context) => const NotesView(),
+          // verifyEmailRoute: (context) => const VerifyEmailView(),
+          eventEditingPageRoute: (context) => const EventEditingPage(),
+          createOrUpdateNoteRoute: (context) => const CreateUpdateNoteView(),
+        },
       ),
-      home: BlocProvider<AuthBloc>(
-        create: (context) => AuthBloc(FirebaseAuthProvider()),
-        child: const HomePage(),
-      ),
-      routes: {
-        // loginRoute: (context) => const LoginView(),
-        // registerRoute: (context) => const RegisterView(),
-        notesRoute: (context) => const NotesView(),
-        // verifyEmailRoute: (context) => const VerifyEmailView(),
-        eventEditingPageRoute: (context) => const EventEditingPage(),
-        createOrUpdateNoteRoute: (context) => const CreateUpdateNoteView(),
-      },
     ),
   );
 }

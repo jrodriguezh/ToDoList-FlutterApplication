@@ -33,7 +33,7 @@ class _HomeViewState extends State<HomeView> {
         child: NavigationBar(
           animationDuration: const Duration(seconds: 1),
           labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
-          backgroundColor: const Color(0xff24283b),
+          backgroundColor: Color(0xff24283b),
           height: MediaQuery.of(context).size.height * 0.11,
           selectedIndex: index,
           onDestinationSelected: (index) => setState(
