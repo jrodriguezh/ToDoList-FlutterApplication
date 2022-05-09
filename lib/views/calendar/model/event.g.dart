@@ -6,6 +6,16 @@ part of 'event.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+EventList _$EventListFromJson(Map<String, dynamic> json) => EventList(
+      event: (json['event'] as List<dynamic>)
+          .map((e) => Event.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$EventListToJson(EventList instance) => <String, dynamic>{
+      'event': instance.event,
+    };
+
 Event _$EventFromJson(Map<String, dynamic> json) => Event(
       id: json['id'] as int?,
       title: json['title'] as String,

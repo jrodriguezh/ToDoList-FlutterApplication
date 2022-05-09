@@ -5,6 +5,18 @@ import 'package:json_annotation/json_annotation.dart';
 part "event.g.dart";
 
 @JsonSerializable()
+class EventList {
+  EventList({
+    required this.event,
+  });
+
+  List<Event> event;
+  factory EventList.fromJson(Map<String, dynamic> json) =>
+      _$EventListFromJson(json);
+  Map<String, dynamic> toJson() => _$EventListToJson(this);
+}
+
+@JsonSerializable()
 class Event {
   final int? id;
   final String title;

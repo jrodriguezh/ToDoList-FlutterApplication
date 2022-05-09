@@ -8,7 +8,6 @@ class EventProvider extends ChangeNotifier {
   List<Event> _events = [];
 
   Future refreshEvents() async {
-    // _events = await EventsDatabase.instance.readAllEvents();
     notifyListeners();
   }
 
@@ -49,5 +48,22 @@ class EventProvider extends ChangeNotifier {
     _events[index] = newEvent;
 
     notifyListeners();
+  }
+
+  Future<EventList> getEventList() async {
+    EventList eventList = EventList(event: []);
+    await FirebaseFirestore.instance.collection("events").get().then(
+      (QuerySnapshot<Map<String, dynamic>> querySnapshot) {
+        eventList = EventList(
+            event: querySnapshot.docs
+                .map(
+                  (e) => Event.fromJson(
+                    e.data(),
+                  ),
+                )
+                .toList());
+      },
+    );
+    return eventList;
   }
 }
