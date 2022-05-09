@@ -8,7 +8,7 @@ class EventProvider extends ChangeNotifier {
   List<Event> _events = [];
 
   Future refreshEvents() async {
-    _events = await EventsDatabase.instance.readAllEvents();
+    // _events = await EventsDatabase.instance.readAllEvents();
     notifyListeners();
   }
 

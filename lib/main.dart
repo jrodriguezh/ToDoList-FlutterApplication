@@ -34,8 +34,8 @@ void main() {
           ),
           scaffoldBackgroundColor: const Color(0xff24283b),
           colorScheme: ColorScheme.fromSeed(
-            seedColor: Color(0xffc0caf5),
-            primary: Color.fromARGB(255, 139, 149, 196),
+            seedColor: const Color(0xffc0caf5),
+            primary: const Color.fromARGB(255, 139, 149, 196),
             secondary: const Color(0xffc0caf5),
           ),
           useMaterial3: true,

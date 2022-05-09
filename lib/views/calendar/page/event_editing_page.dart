@@ -303,7 +303,7 @@ class _EventEditingPageState extends State<EventEditingPage> {
       } else {
         provider.addEvent(event);
         await docEvent.set(json);
-        await EventsDatabase.instance.create(event);
+        // await EventsDatabase.instance.create(event);
       }
 
       Navigator.of(context).pop();
