@@ -48,7 +48,7 @@ class LoadingScreen {
                 minWidth: size.width * 0.5,
               ),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: const Color(0xff24283b),
                 borderRadius: BorderRadius.circular(10.0),
               ),
               child: SingleChildScrollView(
@@ -63,10 +63,10 @@ class LoadingScreen {
                         stream: _text.stream,
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
-                            return Text(
-                              snapshot.data as String,
-                              textAlign: TextAlign.center,
-                            );
+                            return Text(snapshot.data as String,
+                                textAlign: TextAlign.center,
+                                style:
+                                    const TextStyle(color: Color(0xffc0caf5)));
                           } else {
                             return Container();
                           }

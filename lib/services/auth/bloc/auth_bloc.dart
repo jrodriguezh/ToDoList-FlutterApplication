@@ -99,9 +99,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthEventLogIn>((event, emit) async {
       emit(
         const AuthStateLoggedOut(
-            exception: null,
-            isLoading: true,
-            loadingText: "Please wait while I log you in"),
+            exception: null, isLoading: true, loadingText: "Loading"),
       );
       final email = event.email;
       final password = event.password;

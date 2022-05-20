@@ -1,0 +1,7 @@
+import 'package:flutter/material.dart';
+
+ColorOscuro: Color(0xff24283b),
+ColorOscuroclaro: Color(0xff414868),
+ColorTitulo: Color(0xff2ac3de),
+ColorTextoBasico: Color(0xffb4f9f8),
+

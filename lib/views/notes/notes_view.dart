@@ -20,6 +20,7 @@ class NotesView extends StatefulWidget {
 }
 
 class _NotesViewState extends State<NotesView> {
+  int index = 0;
   late final FirebaseCloudStorage _notesService;
   String get userId => AuthService.firebase().currentUser!.id;
 
@@ -33,6 +34,7 @@ class _NotesViewState extends State<NotesView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: const Color(0xff414868),
         title: const Text("Touch&List"),
         actions: [
           IconButton(
@@ -61,35 +63,71 @@ class _NotesViewState extends State<NotesView> {
           })
         ],
       ),
-      body: StreamBuilder(
-          stream: _notesService.allNotes(ownerUserId: userId),
-          builder: (context, snapshot) {
-            switch (snapshot.connectionState) {
-              case ConnectionState.waiting:
-              case ConnectionState.active:
-                if (snapshot.hasData) {
-                  final allNotes = snapshot.data as Iterable<CloudNote>;
-                  return NotesListView(
-                    notes: allNotes,
-                    onDeleteNote: (note) async {
-                      await _notesService.deleteNote(
-                          docuemntId: note.documentId);
-                    },
-                    onTap: (note) {
-                      Navigator.of(context).pushNamed(
-                        createOrUpdateNoteRoute,
-                        arguments: note,
-                      );
-                    },
-                  );
-                } else {
-                  return const CircularProgressIndicator();
-                }
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Color(0xff24283b),
+              Color(0xff414868),
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: StreamBuilder(
+            stream: _notesService.allNotes(ownerUserId: userId),
+            builder: (context, snapshot) {
+              switch (snapshot.connectionState) {
+                case ConnectionState.waiting:
+                case ConnectionState.active:
+                  if (snapshot.hasData) {
+                    final allNotes = snapshot.data as Iterable<CloudNote>;
+                    return NotesListView(
+                      notes: allNotes,
+                      onDeleteNote: (note) async {
+                        await _notesService.deleteNote(
+                            docuemntId: note.documentId);
+                      },
+                      onTap: (note) {
+                        Navigator.of(context).pushNamed(
+                          createOrUpdateNoteRoute,
+                          arguments: note,
+                        );
+                      },
+                    );
+                  } else {
+                    return Container(
+                        alignment: Alignment.center,
+                        decoration: const BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              Color(0xff24283b),
+                              Color(0xff414868),
+                            ],
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                          ),
+                        ),
+                        child: const CircularProgressIndicator());
+                  }
 
-              default:
-                return const CircularProgressIndicator();
-            }
-          }),
+                default:
+                  return Container(
+                      alignment: Alignment.center,
+                      decoration: const BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Color(0xff24283b),
+                            Color(0xff414868),
+                          ],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                        ),
+                      ),
+                      child: const CircularProgressIndicator());
+              }
+            }),
+      ),
     );
   }
 }
