@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:touchandlist/constants/routes.dart';
 import 'package:touchandlist/services/auth/auth_service.dart';
 import 'package:touchandlist/services/cloud/firebase_cloud_storage.dart';
-import 'package:touchandlist/services/crud/notes_service.dart';
 import 'package:touchandlist/utilities/generics/get_arguments.dart';
-import 'package:touchandlist/services/cloud/cloud_storage_constants.dart';
 import 'package:touchandlist/services/cloud/cloud_note.dart';
-import 'package:touchandlist/services/cloud/cloud_storage_exceptions.dart';
 
 import '../../utilities/dialogs/cannot_share_empty_note.dart';
 

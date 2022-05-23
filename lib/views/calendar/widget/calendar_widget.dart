@@ -16,18 +16,33 @@ class CalendarWidget extends StatelessWidget {
     return SfCalendar(
       view: CalendarView.month,
       firstDayOfWeek: 1,
-      monthViewSettings: const MonthViewSettings(
+      todayTextStyle: TextStyle(
+          fontSize: MediaQuery.of(context).size.width * 0.028,
+          color: Colors.white),
+      headerStyle: const CalendarHeaderStyle(
+        textStyle: TextStyle(fontSize: 20, color: Colors.white),
+      ),
+      viewHeaderStyle: const ViewHeaderStyle(
+        dayTextStyle: TextStyle(
+          fontSize: 20,
+          color: Colors.amberAccent,
+        ),
+      ),
+      monthViewSettings: MonthViewSettings(
         showAgenda: true,
         agendaViewHeight: 120,
         agendaStyle: AgendaStyle(
             backgroundColor: Colors.transparent,
-            appointmentTextStyle: TextStyle(
-                color: Colors.white, fontSize: 13, fontStyle: FontStyle.italic),
+            appointmentTextStyle: const TextStyle(
+              color: Colors.white,
+              fontSize: 13,
+              fontStyle: FontStyle.italic,
+            ),
             dayTextStyle: TextStyle(
-                color: Color.fromARGB(255, 46, 206, 155),
-                fontSize: 13,
+                color: const Color.fromARGB(255, 46, 206, 155),
+                fontSize: MediaQuery.of(context).size.width * 0.028,
                 fontStyle: FontStyle.italic),
-            dateTextStyle: TextStyle(
+            dateTextStyle: const TextStyle(
                 color: Color(0xffc0caf5),
                 fontSize: 25,
                 fontWeight: FontWeight.bold,
@@ -35,16 +50,16 @@ class CalendarWidget extends StatelessWidget {
         monthCellStyle: MonthCellStyle(
           textStyle: TextStyle(
               fontStyle: FontStyle.normal,
-              fontSize: 15,
-              color: Color.fromARGB(255, 255, 255, 255)),
+              fontSize: MediaQuery.of(context).size.width * 0.028,
+              color: const Color.fromARGB(255, 255, 255, 255)),
           trailingDatesTextStyle: TextStyle(
               fontStyle: FontStyle.normal,
-              fontSize: 15,
-              color: Color(0xffc0caf5)),
+              fontSize: MediaQuery.of(context).size.width * 0.028,
+              color: const Color(0xffc0caf5)),
           leadingDatesTextStyle: TextStyle(
               fontStyle: FontStyle.normal,
-              fontSize: 15,
-              color: Color(0xffc0caf5)),
+              fontSize: MediaQuery.of(context).size.width * 0.028,
+              color: const Color(0xffc0caf5)),
         ),
       ),
       dataSource: EventDataSource(events),

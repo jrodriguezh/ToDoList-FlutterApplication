@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:touchandlist/views/calendar/provider/event_provider.dart';
 import "package:touchandlist/views/calendar/widget/calendar_widget.dart";
 import 'package:touchandlist/views/calendar/page/event_editing_page.dart';
 

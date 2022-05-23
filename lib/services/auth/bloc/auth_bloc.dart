@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:touchandlist/services/auth/auth_provider.dart';
-import 'package:touchandlist/services/auth/auth_service.dart';
 import 'package:touchandlist/services/auth/bloc/auth_event.dart';
 import 'package:touchandlist/services/auth/bloc/auth_state.dart';
 

@@ -1,11 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:touchandlist/views/calendar/db/events_database.dart';
 import 'package:touchandlist/views/calendar/model/event.dart';
 import 'package:touchandlist/utils.dart';
 import 'package:flutter/cupertino.dart';
 
 class EventProvider extends ChangeNotifier {
-  List<Event> _events = [];
+  final List<Event> _events = [];
 
   Future refreshEvents() async {
     notifyListeners();

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:touchandlist/services/auth/auth_exceptions.dart';
 import 'package:touchandlist/services/auth/bloc/auth_bloc.dart';
 import 'package:touchandlist/services/auth/bloc/auth_event.dart';
 import 'package:touchandlist/services/auth/bloc/auth_state.dart';

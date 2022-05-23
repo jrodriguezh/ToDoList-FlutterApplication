@@ -1,5 +1,4 @@
 import 'package:touchandlist/views/calendar/model/event.dart';
-import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class EventDataSource extends CalendarDataSource {

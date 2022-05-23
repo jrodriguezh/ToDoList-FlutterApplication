@@ -7,7 +7,6 @@ import 'package:touchandlist/services/auth/bloc/auth_bloc.dart';
 import 'package:touchandlist/services/auth/bloc/auth_event.dart';
 import 'package:touchandlist/services/cloud/cloud_note.dart';
 import 'package:touchandlist/services/cloud/firebase_cloud_storage.dart';
-import 'package:touchandlist/services/crud/notes_service.dart';
 import 'package:touchandlist/views/notes/notes_list_view.dart';
 
 import '../../utilities/dialogs/logout_dialog.dart';

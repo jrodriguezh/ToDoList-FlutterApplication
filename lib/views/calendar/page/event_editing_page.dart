@@ -1,13 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:touchandlist/services/auth/auth_provider.dart';
+
 import 'package:touchandlist/services/auth/auth_service.dart';
 import 'package:touchandlist/views/calendar/model/event.dart';
 import 'package:touchandlist/views/calendar/provider/event_provider.dart';
 import 'package:touchandlist/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../db/events_database.dart';
 
 class EventEditingPage extends StatefulWidget {
   final Event? event;
@@ -123,7 +121,7 @@ class _EventEditingPageState extends State<EventEditingPage> {
           buildFrom(),
           if (!isAllDay) buildTo(),
           CheckboxListTile(
-            checkColor: Color(0xffc0caf5),
+            checkColor: const Color(0xffc0caf5),
             controlAffinity: ListTileControlAffinity.leading,
             title: const Text(
               'All Day Event',
@@ -208,7 +206,7 @@ class _EventEditingPageState extends State<EventEditingPage> {
       ListTile(
         title: Text(
           text,
-          style: TextStyle(
+          style: const TextStyle(
             color: Color(0xffc0caf5),
           ),
         ),
